@@ -1,20 +1,18 @@
 #!/bin/bash
 
 # Constants
-#LOG_DIR="$HOME/user_management.log"
-#SECURE_DIR="$HOME/secure"
 LOG_FILE="/var/log/user_management.log"
 PASSWORD_FILE="/var/secure/user_passwords.txt"
 GROUP_DELIMITER=","
 USER_GROUP_DELIMITER=";"
 
 # Ensure the directories exist and set appropriate permissions
-mkdir -p /var/secure
-chmod 700 /var/secure
+sudo mkdir -p /var/secure
+sudo chmod 700 /var/secure
 
 # Function to log messages
 log_message() {
-  echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"
+  echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | sudo tee -a "$LOG_FILE"
 }
 
 # Function to generate a random password
@@ -45,12 +43,12 @@ while IFS="$USER_GROUP_DELIMITER" read -r username groups; do
   fi
 
   # Create user with home directory
-  useradd -m "$username"
+  sudo useradd -m "$username"
   log_message "User '$username' created with home directory."
 
   # Set user password
   password=$(generate_password)
-  echo "$username:$password" | chpasswd
+  echo "$username:$password" | sudo chpasswd
   echo "$username,$password" >> "$PASSWORD_FILE"
   log_message "Password set for user '$username'."
 
@@ -60,10 +58,10 @@ while IFS="$USER_GROUP_DELIMITER" read -r username groups; do
     for group in "${group_array[@]}"; do
       group=$(echo "$group" | xargs) # Trim whitespace
       if ! getent group "$group" >/dev/null; then
-        groupadd "$group"
+        sudo groupadd "$group"
         log_message "Group '$group' created."
       fi
-      usermod -aG "$group" "$username"
+      sudo usermod -aG "$group" "$username"
       log_message "User '$username' added to group '$group'."
     done
   fi
@@ -71,8 +69,8 @@ while IFS="$USER_GROUP_DELIMITER" read -r username groups; do
 done < "$USER_LIST_FILE"
 
 # Secure password file
-chown root:root "$PASSWORD_FILE"
-chmod 600 "$PASSWORD_FILE"
+sudo chown root:root "$PASSWORD_FILE"
+sudo chmod 600 "$PASSWORD_FILE"
 log_message "Password file secured."
 
 log_message "User creation script completed successfully."
