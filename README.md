@@ -1,4 +1,5 @@
- LINUX USER CREATION BASH SCRIPT
+                                              LINUX USER CREATION BASH SCRIPT
+                                              
  INTRODUCTION
  As businesses scale and onboard new team members, managing user accounts across multiple Linux servers becomes increasingly complex.
  Our bash script aims to streamline this process by reading a user list file, creating users with home directories, generating random passwords, assigning user-specific groups, and logging all actions for accountability.
@@ -21,3 +22,6 @@
 
  CONCLUSION
  Automating Linux user management tasks with bash scripting boosts operational efficiency and ensures high security by managing access controls and password protections effectively. This script serves as a practical example of applying DevOps principles to streamline IT infrastructure maintenance.
+
+ To join HNG internship visit 
+  https://hng.tech/internship, https://hng.tech/hire
